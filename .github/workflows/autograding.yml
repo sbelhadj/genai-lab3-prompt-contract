@@ -1,0 +1,48 @@
+name: Autograding
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  autograding:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --no-cache-dir pytest jsonschema nbformat
+
+      - name: Run deliverable structure tests
+        run: |
+          echo "::group::Deliverable structure tests"
+          pytest tests/test_deliverables.py -v --tb=short 2>&1 || true
+          echo "::endgroup::"
+
+      - name: Run test suite validation
+        run: |
+          echo "::group::Test suite validation"
+          pytest tests/test_suite_validation.py -v --tb=short 2>&1 || true
+          echo "::endgroup::"
+
+      - name: Generate grading summary
+        if: always()
+        run: |
+          echo "## Lab 3 — Autograding Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deliverable Structure" >> $GITHUB_STEP_SUMMARY
+          pytest tests/test_deliverables.py -v --tb=line 2>&1 | tail -20 >> $GITHUB_STEP_SUMMARY || true
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Suite Validation" >> $GITHUB_STEP_SUMMARY
+          pytest tests/test_suite_validation.py -v --tb=line 2>&1 | tail -15 >> $GITHUB_STEP_SUMMARY || true
