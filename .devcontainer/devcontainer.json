@@ -1,0 +1,25 @@
+{
+  "name": "GenAI Lab 3 — The Prompt Contract",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "postCreateCommand": "pip install --no-cache-dir numpy matplotlib jupyter requests pytest jsonschema nbformat && curl -fsSL https://ollama.com/install.sh | sh",
+  "postStartCommand": "nohup ollama serve > /tmp/ollama.log 2>&1 & sleep 8 && ollama pull llama3.2:3b &",
+  "forwardPorts": [11434, 8888],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-toolsai.jupyter",
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "jupyter.askForKernelRestart": false
+      }
+    }
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb",
+    "storage": "32gb"
+  }
+}
