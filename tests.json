@@ -1,0 +1,19 @@
+[
+  {
+    "_comment": "EXAMPLE test case — replace with your own 10+ test cases.",
+    "id": "example_normal_01",
+    "category": "normal",
+    "input": {
+      "ticket_text": "Hi, I can't log into my TaskFlow account since yesterday. I've tried resetting my password three times but the reset email never arrives. My account email is jane@example.com. This is urgent because I have a sprint review deadline tomorrow."
+    },
+    "expected_properties": {
+      "is_valid_json": true,
+      "has_field_issue_category": true,
+      "has_field_severity": true,
+      "severity_in": ["low", "medium", "high"],
+      "has_field_synopsis": true,
+      "synopsis_max_words": 30,
+      "no_hallucinated_info": true
+    }
+  }
+]
